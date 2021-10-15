@@ -14,17 +14,27 @@ export default class Game {
 	constructor(gameWidth, gameHeight) {
 		this.gameWidth = gameWidth;
 		this.gameHeight = gameHeight;
-	}
-	start() {
-		this.gameState = GAMESTATE.RUNNING;
+		this.gameState = GAMESTATE.MENU;
 		this.paddle = new Paddle(this);
 		this.ball = new Ball(this);
-		const bricks = buildLevel(this, level1);
-		this.gameObjects = [this.paddle, this.ball, ...bricks];
+		this.gameObjects = [];
+		this.lives = 3;
 		new InputHandler(this.paddle, this);
 	}
+	start() {
+		if (this.gameState !== GAMESTATE.MENU) return;
+		let bricks = buildLevel(this, level1);
+		this.gameObjects = [this.paddle, this.ball, ...bricks];
+		this.gameState = GAMESTATE.RUNNING;
+	}
 	update(deltaTime) {
-		if (this.gameState === GAMESTATE.PAUSED) return;
+		if (this.lives === 0) this.gameState = GAMESTATE.GAMEOVER;
+		if (
+			this.gameState === GAMESTATE.PAUSED ||
+			this.gameState === GAMESTATE.MENU ||
+			this.gameState === GAMESTATE.GAMEOVER
+		)
+			return;
 		this.gameObjects.forEach((object) => object.update(deltaTime));
 		this.gameObjects = this.gameObjects.filter(
 			(object) => !object.markedForDeletion
@@ -40,6 +50,28 @@ export default class Game {
 			ctx.fillStyle = 'white';
 			ctx.textAlign = 'center';
 			ctx.fillText('Paused', this.gameWidth / 2, this.gameHeight / 2);
+		}
+		if (this.gameState === GAMESTATE.MENU) {
+			ctx.rect(0, 0, this.gameWidth, this.gameHeight);
+			ctx.fillStyle = 'rgba(0,0,0,1)';
+			ctx.fill();
+			ctx.font = '30px Arial';
+			ctx.fillStyle = 'white';
+			ctx.textAlign = 'center';
+			ctx.fillText(
+				'Press SPACEBAR To Start',
+				this.gameWidth / 2,
+				this.gameHeight / 2
+			);
+		}
+		if (this.gameState === GAMESTATE.GAMEOVER) {
+			ctx.rect(0, 0, this.gameWidth, this.gameHeight);
+			ctx.fillStyle = 'rgba(0,0,0,1)';
+			ctx.fill();
+			ctx.font = '30px Arial';
+			ctx.fillStyle = 'white';
+			ctx.textAlign = 'center';
+			ctx.fillText('Game Over', this.gameWidth / 2, this.gameHeight / 2);
 		}
 	}
 	togglePause() {
