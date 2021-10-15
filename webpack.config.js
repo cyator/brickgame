@@ -9,14 +9,14 @@ module.exports = {
 	output: {
 		path: path.resolve(__dirname, 'dist'),
 		filename: '[name].[contenthash].js',
-		// assetModuleFilename: '[name][ext]',
+		assetModuleFilename: 'images/[hash][ext][query]',
 		clean: true,
 	},
 	devtool: 'inline-source-map',
 	devServer: {
 		static: { directory: path.resolve(__dirname, 'dist') },
 		port: 3000,
-		open: true,
+		// open: true,
 		hot: true,
 	},
 	//loaders
@@ -27,6 +27,11 @@ module.exports = {
 			{
 				test: /\.html$/,
 				use: ['html-loader'],
+			},
+			{
+				test: /\.js$/,
+				exclude: /node_modules/,
+				use: ['babel-loader'],
 			},
 		],
 	},
