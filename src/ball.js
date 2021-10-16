@@ -15,8 +15,8 @@ export default class Ball {
 			y: 400,
 		};
 		this.speed = {
-			x: 4,
-			y: -2,
+			x: 5,
+			y: -3,
 		};
 	}
 	draw(ctx) {
