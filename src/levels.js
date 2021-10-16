@@ -4,7 +4,7 @@ export const buildLevel = (game, level) => {
 	level.map((row, rowIndex) =>
 		row.map((brick, brickIndex) => {
 			if (brick === 1) {
-				let position = { x: brickIndex * 80, y: 50 + 24 * rowIndex };
+				let position = { x: brickIndex * 80 + 2, y: 50 + 24 * rowIndex };
 				bricks.push(new Brick(game, position));
 			}
 		})
