@@ -3,7 +3,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 module.exports = {
-	mode: 'development',
+	mode: 'production',
 	entry: {
 		main: path.resolve(__dirname, 'src', 'index.js'),
 	},
@@ -11,10 +11,10 @@ module.exports = {
 		path: path.resolve(__dirname, 'dist'),
 		filename: '[name].[contenthash].js',
 		assetModuleFilename: 'images/[hash][ext][query]',
-		clean: true,
+		// clean: true,
 	},
-	watch: true,
-	devtool: 'inline-source-map',
+	// watch: true,
+	// devtool: 'inline-source-map',
 	devServer: {
 		static: { directory: path.resolve(__dirname, 'dist') },
 		port: 3000,
